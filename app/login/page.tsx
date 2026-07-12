@@ -7,12 +7,14 @@ export default async function LoginPage({
   searchParams: Promise<{ error?: string }>;
 }) {
   const params = await searchParams;
-  const message =
-    params.error === "unauthorized"
-      ? "Este email no esta autorizado en ADMIN_EMAILS."
-      : params.error
-        ? "No se ha podido iniciar sesion."
-        : "";
+  const messages: Record<string, string> = {
+    unauthorized: "El login es correcto, pero este email no esta en ADMIN_EMAILS.",
+    invalid_credentials: "Email o contrasena incorrectos, o el usuario no existe en Supabase Auth.",
+    not_confirmed: "El usuario existe, pero el email no esta confirmado en Supabase Auth.",
+    auth: "Supabase ha rechazado el login. Revisa los logs de Vercel para ver el detalle.",
+    invalid: "No se ha podido iniciar sesion."
+  };
+  const message = params.error ? messages[params.error] || messages.invalid : "";
 
   return (
     <main className="grid min-h-screen place-items-center bg-brand-paper p-6">

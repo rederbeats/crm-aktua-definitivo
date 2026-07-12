@@ -43,7 +43,19 @@ export async function signIn(formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
-    redirect("/login?error=invalid");
+    const message = error.message.toLowerCase();
+    const code = error.code || "";
+
+    if (code === "email_not_confirmed" || message.includes("email not confirmed")) {
+      redirect("/login?error=not_confirmed");
+    }
+
+    if (code === "invalid_credentials" || message.includes("invalid login credentials")) {
+      redirect("/login?error=invalid_credentials");
+    }
+
+    console.error("Supabase login error", { code, message: error.message });
+    redirect("/login?error=auth");
   }
 
   redirect("/");
