@@ -12,7 +12,7 @@ export default async function LoginPage({
     invalid_credentials: "Email o contrasena incorrectos, o el usuario no existe en Supabase Auth.",
     not_confirmed: "El usuario existe, pero el email no esta confirmado en Supabase Auth.",
     auth: "Supabase ha rechazado el login. Revisa los logs de Vercel para ver el detalle.",
-    invalid: "No se ha podido iniciar sesion."
+    invalid: "Email o contrasena incorrectos, o el usuario no existe en Supabase Auth."
   };
   const message = params.error ? messages[params.error] || messages.invalid : "";
 
