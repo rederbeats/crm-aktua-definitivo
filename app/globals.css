@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: #f6f5f3;
+  color: #141414;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid #dedbd6;
+  border-radius: 6px;
+  background: #ffffff;
+  padding: 10px 12px;
+  color: #141414;
+  outline: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #c81022;
+  box-shadow: 0 0 0 3px rgba(200, 16, 34, 0.12);
+}
+
+textarea {
+  min-height: 96px;
+  resize: vertical;
+}
+
+button {
+  cursor: pointer;
+}
+
+.panel {
+  border: 1px solid #dedbd6;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(10, 10, 10, 0.06), 0 8px 24px rgba(10, 10, 10, 0.05);
+}
+
+.record {
+  border: 1px solid #dedbd6;
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 16px;
+}
+
+.form-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.tag {
+  border-radius: 999px;
+  background: #f1f1ef;
+  padding: 4px 9px;
+}
+
+.command-button {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  gap: 8px;
+  border-radius: 6px;
+  padding: 0 14px;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.icon-button {
+  display: inline-flex;
+  height: 34px;
+  width: 34px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: #f1f1ef;
+  color: #141414;
+}
