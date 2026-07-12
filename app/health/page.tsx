@@ -26,6 +26,34 @@ function envCheck(name: string): Check {
   };
 }
 
+function jwtRoleCheck(name: string, expectedRole: string): Check {
+  const value = process.env[name]?.trim();
+
+  if (!value) {
+    return { name: `${name} role`, ok: false, detail: "Falta la clave" };
+  }
+
+  try {
+    const [, payload] = value.split(".");
+    if (!payload) throw new Error("La clave no tiene formato JWT");
+    const normalized = payload.replace(/-/g, "+").replace(/_/g, "/");
+    const decoded = JSON.parse(Buffer.from(normalized, "base64").toString("utf8")) as { role?: string; ref?: string };
+    const role = decoded.role || "sin role";
+
+    return {
+      name: `${name} role`,
+      ok: role === expectedRole,
+      detail: role === expectedRole ? `OK, role ${role}` : `Role recibido: ${role}. Esperado: ${expectedRole}`
+    };
+  } catch (error) {
+    return {
+      name: `${name} role`,
+      ok: false,
+      detail: error instanceof Error ? error.message : "No se pudo leer la clave"
+    };
+  }
+}
+
 async function tableChecks(): Promise<Check[]> {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -52,7 +80,12 @@ async function tableChecks(): Promise<Check[]> {
 }
 
 export default async function HealthPage() {
-  const checks = [...requiredEnv.map(envCheck), ...(await tableChecks())];
+  const checks = [
+    ...requiredEnv.map(envCheck),
+    jwtRoleCheck("NEXT_PUBLIC_SUPABASE_ANON_KEY", "anon"),
+    jwtRoleCheck("SUPABASE_SERVICE_ROLE_KEY", "service_role"),
+    ...(await tableChecks())
+  ];
 
   return (
     <main className="min-h-screen bg-brand-paper p-6 text-brand-ink">

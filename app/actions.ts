@@ -36,6 +36,33 @@ function numericValue(formData: FormData, key: string) {
   return number;
 }
 
+function redirectWithAuthError(error: { code?: string; message: string; status?: number }) {
+  const code = error.code || "unknown";
+  const status = error.status ? String(error.status) : "";
+  const message = error.message.toLowerCase();
+  const params = new URLSearchParams();
+
+  if (code === "email_not_confirmed" || message.includes("email not confirmed")) {
+    params.set("error", "not_confirmed");
+  } else if (
+    code === "invalid_credentials" ||
+    message.includes("invalid login credentials") ||
+    message.includes("invalid credentials")
+  ) {
+    params.set("error", "invalid_credentials");
+  } else if (message.includes("invalid api key") || message.includes("api key")) {
+    params.set("error", "bad_anon_key");
+  } else {
+    params.set("error", "auth");
+  }
+
+  params.set("code", code);
+  if (status) params.set("status", status);
+
+  console.error("Supabase login error", { code, status, message: error.message });
+  redirect(`/login?${params.toString()}`);
+}
+
 export async function signIn(formData: FormData) {
   const email = required(formData, "email");
   const password = required(formData, "password");
@@ -43,19 +70,7 @@ export async function signIn(formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
-    const message = error.message.toLowerCase();
-    const code = error.code || "";
-
-    if (code === "email_not_confirmed" || message.includes("email not confirmed")) {
-      redirect("/login?error=not_confirmed");
-    }
-
-    if (code === "invalid_credentials" || message.includes("invalid login credentials")) {
-      redirect("/login?error=invalid_credentials");
-    }
-
-    console.error("Supabase login error", { code, message: error.message });
-    redirect("/login?error=auth");
+    redirectWithAuthError(error);
   }
 
   redirect("/");
