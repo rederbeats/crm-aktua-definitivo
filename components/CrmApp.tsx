@@ -9,6 +9,7 @@ import {
   UsersRound
 } from "lucide-react";
 import { SubmitButton } from "@/components/SubmitButton";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import {
   createActivityRecord,
   createClientRecord,
@@ -95,9 +96,12 @@ export function CrmApp({ data, userEmail }: { data: CrmData; userEmail: string }
               <h1 className="text-2xl font-black">CRM comercial</h1>
               <p className="text-sm text-neutral-600">{userEmail}</p>
             </div>
-            <form action={signOut}>
-              <SubmitButton label="Salir" pendingLabel="Saliendo..." icon="logout" variant="dark" />
-            </form>
+            <div className="flex flex-wrap items-center gap-2">
+              <ThemeToggle />
+              <form action={signOut}>
+                <SubmitButton label="Salir" pendingLabel="Saliendo..." icon="logout" variant="dark" />
+              </form>
+            </div>
           </div>
         </header>
 

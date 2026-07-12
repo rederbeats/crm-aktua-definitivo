@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { signIn } from "@/app/actions";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default async function LoginPage({
   searchParams
@@ -22,6 +23,9 @@ export default async function LoginPage({
   return (
     <main className="grid min-h-screen place-items-center bg-brand-paper p-6">
       <section className="panel w-full max-w-sm p-6">
+        <div className="mb-4 flex justify-end">
+          <ThemeToggle />
+        </div>
         <Image src="/aktua-home-logo.png" alt="Aktua Home" width={220} height={220} className="mx-auto h-auto w-44" priority />
         <div className="mt-6">
           <p className="text-xs font-bold uppercase text-brand-red">Acceso privado</p>

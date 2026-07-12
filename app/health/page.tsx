@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export const dynamic = "force-dynamic";
 
@@ -132,9 +133,12 @@ export default async function HealthPage() {
             <h1 className="mt-1 text-2xl font-black">Health check CRM</h1>
             <p className="mt-2 text-sm text-neutral-600">Comprueba variables, conexion con Supabase y tablas principales.</p>
           </div>
-          <Link className="rounded bg-brand-black px-4 py-2 text-sm font-bold text-white" href="/">
-            Volver
-          </Link>
+          <div className="flex flex-wrap items-center gap-2">
+            <ThemeToggle />
+            <Link className="rounded bg-brand-black px-4 py-2 text-sm font-bold text-white" href="/">
+              Volver
+            </Link>
+          </div>
         </div>
         <div className="mt-6 grid gap-3">
           {checks.map((check) => (
