@@ -58,6 +58,7 @@ function redirectWithAuthError(error: { code?: string; message: string; status?:
 
   params.set("code", code);
   if (status) params.set("status", status);
+  params.set("detail", error.message.slice(0, 140));
 
   console.error("Supabase login error", { code, status, message: error.message });
   redirect(`/login?${params.toString()}`);

@@ -79,11 +79,47 @@ async function tableChecks(): Promise<Check[]> {
   );
 }
 
+async function authEndpointCheck(): Promise<Check> {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/$/, "");
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!url || !anonKey) {
+    return {
+      name: "Supabase Auth endpoint",
+      ok: false,
+      detail: "Faltan NEXT_PUBLIC_SUPABASE_URL o NEXT_PUBLIC_SUPABASE_ANON_KEY"
+    };
+  }
+
+  try {
+    const response = await fetch(`${url}/auth/v1/settings`, {
+      headers: {
+        apikey: anonKey,
+        Authorization: `Bearer ${anonKey}`
+      },
+      cache: "no-store"
+    });
+
+    return {
+      name: "Supabase Auth endpoint",
+      ok: response.ok,
+      detail: response.ok ? "OK, Auth responde" : `HTTP ${response.status} ${response.statusText}`
+    };
+  } catch (error) {
+    return {
+      name: "Supabase Auth endpoint",
+      ok: false,
+      detail: error instanceof Error ? error.message : "No se pudo consultar Auth"
+    };
+  }
+}
+
 export default async function HealthPage() {
   const checks = [
     ...requiredEnv.map(envCheck),
     jwtRoleCheck("NEXT_PUBLIC_SUPABASE_ANON_KEY", "anon"),
     jwtRoleCheck("SUPABASE_SERVICE_ROLE_KEY", "service_role"),
+    await authEndpointCheck(),
     ...(await tableChecks())
   ];
 

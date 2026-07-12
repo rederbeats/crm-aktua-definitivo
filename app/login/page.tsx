@@ -4,7 +4,7 @@ import { signIn } from "@/app/actions";
 export default async function LoginPage({
   searchParams
 }: {
-  searchParams: Promise<{ error?: string; code?: string; status?: string }>;
+  searchParams: Promise<{ error?: string; code?: string; status?: string; detail?: string }>;
 }) {
   const params = await searchParams;
   const messages: Record<string, string> = {
@@ -17,6 +17,7 @@ export default async function LoginPage({
   };
   const message = params.error ? messages[params.error] || messages.invalid : "";
   const detail = params.code || params.status ? `Codigo: ${params.code || "sin_codigo"}${params.status ? ` | HTTP ${params.status}` : ""}` : "";
+  const authDetail = params.detail ? decodeURIComponent(params.detail) : "";
 
   return (
     <main className="grid min-h-screen place-items-center bg-brand-paper p-6">
@@ -31,6 +32,7 @@ export default async function LoginPage({
           <div className="mt-4 rounded bg-red-50 px-3 py-2 text-sm font-bold text-brand-red">
             <p>{message}</p>
             {detail ? <p className="mt-1 text-xs font-semibold text-red-700">{detail}</p> : null}
+            {authDetail ? <p className="mt-1 text-xs font-semibold text-red-700">{authDetail}</p> : null}
           </div>
         ) : null}
         <form action={signIn} className="mt-5 grid gap-3">
