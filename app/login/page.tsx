@@ -26,7 +26,7 @@ export default async function LoginPage({
         <div className="mb-4 flex justify-end">
           <ThemeToggle />
         </div>
-        <Image src="/aktua-home-logo.png" alt="Aktua Home" width={220} height={220} className="mx-auto h-auto w-44" priority />
+        <Image src="/aktua-home-logo-cropped.png" alt="Aktua Home" width={220} height={102} className="mx-auto h-auto w-48 rounded bg-white p-1" priority />
         <div className="mt-6">
           <p className="text-xs font-bold uppercase text-brand-red">Acceso privado</p>
           <h1 className="mt-1 text-2xl font-black">CRM Aktua Home</h1>

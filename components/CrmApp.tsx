@@ -91,10 +91,20 @@ export function CrmApp({ data, userEmail }: { data: CrmData; userEmail: string }
       <section className="lg:pl-64">
         <header className="sticky top-0 z-10 border-b border-brand-line bg-brand-paper/95 px-4 py-4 backdrop-blur md:px-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <p className="text-xs font-bold uppercase text-brand-red">Aktua Home</p>
-              <h1 className="text-2xl font-black">CRM comercial</h1>
-              <p className="text-sm text-neutral-600">{userEmail}</p>
+            <div className="flex min-w-0 items-center gap-3">
+              <Image
+                src="/aktua-home-logo-cropped.png"
+                alt="Aktua Home"
+                width={156}
+                height={72}
+                className="h-12 w-auto rounded bg-white p-1 lg:hidden"
+                priority
+              />
+              <div className="min-w-0">
+                <p className="text-xs font-bold uppercase text-brand-red">Aktua Home</p>
+                <h1 className="text-2xl font-black">CRM comercial</h1>
+                <p className="truncate text-sm text-neutral-600">{userEmail}</p>
+              </div>
             </div>
             <div className="flex flex-wrap items-center gap-2">
               <ThemeToggle />
