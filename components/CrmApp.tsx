@@ -3,15 +3,12 @@ import {
   Activity,
   Building2,
   CalendarClock,
-  CheckCircle2,
   Home,
-  LogOut,
   Phone,
-  Plus,
-  Trash2,
   UserRound,
   UsersRound
 } from "lucide-react";
+import { SubmitButton } from "@/components/SubmitButton";
 import {
   createActivityRecord,
   createClientRecord,
@@ -65,9 +62,7 @@ function DeleteButton({ table, id }: { table: string; id: string }) {
     <form action={deleteRecord}>
       <input type="hidden" name="table" value={table} />
       <input type="hidden" name="id" value={id} />
-      <button className="icon-button text-brand-red" type="submit" title="Eliminar">
-        <Trash2 size={16} />
-      </button>
+      <SubmitButton label="Eliminar" pendingLabel="Eliminando..." icon="trash" variant="danger" title="Eliminar" />
     </form>
   );
 }
@@ -101,10 +96,7 @@ export function CrmApp({ data, userEmail }: { data: CrmData; userEmail: string }
               <p className="text-sm text-neutral-600">{userEmail}</p>
             </div>
             <form action={signOut}>
-              <button className="command-button bg-brand-black text-white" type="submit">
-                <LogOut size={16} />
-                Salir
-              </button>
+              <SubmitButton label="Salir" pendingLabel="Saliendo..." icon="logout" variant="dark" />
             </form>
           </div>
         </header>
@@ -268,7 +260,7 @@ function Module({ id, title, formTitle, children }: { id: string; title: string;
 }
 
 function PrimaryButton({ label }: { label: string }) {
-  return <button className="command-button justify-center bg-brand-red text-white hover:bg-brand-redDark" type="submit"><Plus size={17} />{label}</button>;
+  return <SubmitButton label={label} icon="plus" />;
 }
 
 function RelationSelect<T extends { id: string }>({ name, label, records, formatter }: { name: string; label: string; records: T[]; formatter: (record: T) => string }) {
@@ -352,9 +344,13 @@ function TaskItem({ task, data }: { task: Task; data: CrmData }) {
           <form action={toggleTask}>
             <input type="hidden" name="id" value={task.id} />
             <input type="hidden" name="done" value={String(!task.done)} />
-            <button className="icon-button" type="submit" title={task.done ? "Reabrir" : "Marcar hecha"}>
-              <CheckCircle2 size={16} />
-            </button>
+            <SubmitButton
+              label={task.done ? "Reabrir" : "Marcar hecha"}
+              pendingLabel="Actualizando..."
+              icon="check"
+              variant="ghost"
+              title={task.done ? "Reabrir" : "Marcar hecha"}
+            />
           </form>
           <DeleteButton table="crm_tasks" id={task.id} />
         </div>
